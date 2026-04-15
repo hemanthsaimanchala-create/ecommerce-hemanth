@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { AlertCircle, Package, ShoppingBag } from 'lucide-react';
+import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../lib/api';
 import type { Order } from '../types';
@@ -13,6 +14,7 @@ export const OrdersPage = () => {
   const [cancelOrderId, setCancelOrderId] = useState<string | null>(null);
   const [cancelReason, setCancelReason] = useState('');
   const [cancelError, setCancelError] = useState('');
+  const [isCancelling, setIsCancelling] = useState(false);
 
   useEffect(() => {
     if (!authLoading && isAdmin) {
@@ -73,18 +75,25 @@ export const OrdersPage = () => {
 
     if (!cancelReason.trim()) {
       setCancelError('Please enter a reason before cancelling the order.');
+      toast.error('Please enter a cancellation reason.');
       return;
     }
 
     try {
+      setIsCancelling(true);
       const response = await api.orders.cancel(orderId, cancelReason.trim());
       setOrders((current) =>
         current.map((order) => (order.id === orderId ? response.order : order)),
       );
       setCancelOrderId(null);
       setCancelReason('');
+      toast.success(`Order ${orderId} has been cancelled.`);
     } catch (error) {
-      setCancelError(error instanceof Error ? error.message : 'Failed to cancel the order.');
+      const message = error instanceof Error ? error.message : 'Failed to cancel the order.';
+      setCancelError(message);
+      toast.error(message);
+    } finally {
+      setIsCancelling(false);
     }
   };
 
@@ -179,9 +188,10 @@ export const OrdersPage = () => {
                         <button
                           type="button"
                           onClick={() => handleCancelOrder(order.id)}
-                          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+                          disabled={isCancelling}
+                          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                          Confirm Cancel
+                          {isCancelling ? 'Cancelling...' : 'Confirm Cancel'}
                         </button>
                         <button
                           type="button"
@@ -190,6 +200,7 @@ export const OrdersPage = () => {
                             setCancelReason('');
                             setCancelError('');
                           }}
+                          disabled={isCancelling}
                           className="px-4 py-2 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition"
                         >
                           Keep Order

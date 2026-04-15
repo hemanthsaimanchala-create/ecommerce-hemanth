@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Edit, Plus, Search, Trash2, X } from 'lucide-react';
+import { toast } from 'sonner';
 import { api } from '../../lib/api';
 import type { Product } from '../../types';
 
@@ -23,6 +24,8 @@ export const AdminProducts = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState(emptyForm);
   const [imageStatus, setImageStatus] = useState('No image selected');
+  const [isSaving, setIsSaving] = useState(false);
+  const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
 
   const loadProducts = async () => {
     try {
@@ -87,6 +90,7 @@ export const AdminProducts = () => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     if (!allowedTypes.includes(file.type)) {
       setImageStatus('Please choose a JPG, PNG, WEBP, or GIF image.');
+      toast.error('Please choose a JPG, PNG, WEBP, or GIF image.');
       return;
     }
 
@@ -97,9 +101,11 @@ export const AdminProducts = () => {
         image: typeof reader.result === 'string' ? reader.result : current.image,
       }));
       setImageStatus(`Selected: ${file.name}`);
+      toast.success('Image selected successfully.');
     };
     reader.onerror = () => {
       setImageStatus('Image upload failed. Please try another file.');
+      toast.error('Image upload failed. Please try another file.');
     };
     reader.readAsDataURL(file);
   };
@@ -122,22 +128,28 @@ export const AdminProducts = () => {
 
     if (!payload.image) {
       setImageStatus('Please upload a product image before saving.');
+      toast.error('Please upload a product image before saving.');
       return;
     }
 
     try {
+      setIsSaving(true);
       if (editingProduct) {
         const response = await api.admin.updateProduct(editingProduct.id, payload);
         setProducts((current) =>
           current.map((entry) => (entry.id === editingProduct.id ? response.product : entry)),
         );
+        toast.success('Product updated successfully.');
       } else {
         const response = await api.admin.createProduct(payload);
         setProducts((current) => [response.product, ...current]);
+        toast.success('Product created successfully.');
       }
       closeForm();
-    } catch {
-      // Keep current form state if save fails.
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Product save failed.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -147,10 +159,14 @@ export const AdminProducts = () => {
     }
 
     try {
+      setDeletingProductId(productId);
       await api.admin.deleteProduct(productId);
       setProducts((current) => current.filter((product) => product.id !== productId));
-    } catch {
-      // Ignore delete failures and leave the UI unchanged.
+      toast.success('Product deleted successfully.');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Product delete failed.');
+    } finally {
+      setDeletingProductId(null);
     }
   };
 
@@ -274,9 +290,10 @@ export const AdminProducts = () => {
             <div className="md:col-span-2 flex gap-3">
               <button
                 type="submit"
-                className="px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition"
+                disabled={isSaving}
+                className="px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {editingProduct ? 'Save Changes' : 'Create Product'}
+                {isSaving ? 'Saving...' : editingProduct ? 'Save Changes' : 'Create Product'}
               </button>
               <button
                 type="button"
@@ -350,6 +367,7 @@ export const AdminProducts = () => {
                       </button>
                       <button
                         onClick={() => handleDeleteProduct(product.id)}
+                        disabled={deletingProductId === product.id}
                         className="p-2 text-red-600 hover:bg-red-50 rounded transition"
                       >
                         <Trash2 className="w-4 h-4" />

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CreditCard, CheckCircle, AlertCircle, Smartphone, Landmark, Truck } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 import { BackButton } from '../components/BackButton';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -111,9 +112,12 @@ export const CheckoutPage = () => {
       });
       clearCart();
       setOrderComplete(true);
+      toast.success(`Order placed successfully with ${formData.paymentMethod}.`);
       window.setTimeout(() => navigate('/orders'), 2200);
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : 'Checkout failed.');
+      const message = submitError instanceof Error ? submitError.message : 'Checkout failed.';
+      setError(message);
+      toast.error(message);
     } finally {
       setIsProcessing(false);
     }

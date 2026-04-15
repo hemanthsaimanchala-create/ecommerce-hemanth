@@ -65,6 +65,12 @@ npm install
 npm run dev:full
 ```
 
+Optional:
+
+```bash
+copy .env.example .env
+```
+
 3. Open the frontend:
 
 ```text
@@ -93,6 +99,7 @@ npm run build
 
 - OTP and order status emails use SMTP when configured
 - Without SMTP config, outgoing messages are written to `server/data/mailbox.log` for local testing
+- Copy `.env.example` to `.env` and add your SMTP credentials to send real emails during testing
 
 ## Notes
 

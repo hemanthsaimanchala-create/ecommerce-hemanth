@@ -1,4 +1,5 @@
 import { Outlet, Link, useNavigate } from 'react-router';
+import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { ShoppingCart, User, LogOut, Leaf, Shield } from 'lucide-react';
@@ -10,6 +11,7 @@ export const RootLayout = () => {
 
   const handleLogout = async () => {
     await logout();
+    toast.success('You have been signed out.');
     navigate('/');
   };
 

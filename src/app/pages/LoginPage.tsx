@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AlertCircle, CheckCircle2, Leaf, Mail } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
+import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../lib/api';
 
@@ -34,8 +35,11 @@ export const LoginPage = () => {
 
     if (!loggedInUser) {
       setError('Invalid email or password. Try the demo accounts listed below.');
+      toast.error('Sign in failed. Check your email and password.');
       return;
     }
+
+    toast.success(`Welcome back, ${loggedInUser.name}.`);
 
     if (loggedInUser.role === 'admin' && redirect !== 'checkout' && redirect !== 'orders') {
       navigate('/admin');
@@ -69,8 +73,11 @@ export const LoginPage = () => {
     try {
       const response = await api.auth.forgotPassword(resetEmail);
       setResetMessage(response.message);
+      toast.success(response.message);
     } catch (sendError) {
-      setResetError(sendError instanceof Error ? sendError.message : 'Failed to send OTP.');
+      const message = sendError instanceof Error ? sendError.message : 'Failed to send OTP.';
+      setResetError(message);
+      toast.error(message);
     } finally {
       setIsSendingOtp(false);
     }
@@ -83,11 +90,13 @@ export const LoginPage = () => {
 
     if (newPassword !== confirmPassword) {
       setResetError('New password and confirm password do not match.');
+      toast.error('New password and confirm password do not match.');
       return;
     }
 
     if (newPassword.length < 6) {
       setResetError('New password must be at least 6 characters.');
+      toast.error('New password must be at least 6 characters.');
       return;
     }
 
@@ -100,13 +109,17 @@ export const LoginPage = () => {
         newPassword,
       });
       setResetMessage(response.message);
+      toast.success(response.message);
       setOtpCode('');
       setNewPassword('');
       setConfirmPassword('');
     } catch (resetPasswordError) {
-      setResetError(
-        resetPasswordError instanceof Error ? resetPasswordError.message : 'Password reset failed.',
-      );
+      const message =
+        resetPasswordError instanceof Error
+          ? resetPasswordError.message
+          : 'Password reset failed.';
+      setResetError(message);
+      toast.error(message);
     } finally {
       setIsResettingPassword(false);
     }
