@@ -13,6 +13,54 @@ import {
 import { api } from '../lib/api';
 import type { Product } from '../types';
 
+const buildSlideArtwork = ({
+  backgroundStart,
+  backgroundEnd,
+  panel,
+  accent,
+  accentSoft,
+  label,
+  bottleOne,
+  bottleTwo,
+  leaf,
+}: {
+  backgroundStart: string;
+  backgroundEnd: string;
+  panel: string;
+  accent: string;
+  accentSoft: string;
+  label: string;
+  bottleOne: string;
+  bottleTwo: string;
+  leaf: string;
+}) =>
+  `data:image/svg+xml;utf8,${encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+      <defs>
+        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${backgroundStart}" />
+          <stop offset="100%" stop-color="${backgroundEnd}" />
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="900" fill="url(#bg)" />
+      <circle cx="980" cy="170" r="150" fill="${accentSoft}" opacity="0.7" />
+      <circle cx="170" cy="730" r="190" fill="${accentSoft}" opacity="0.55" />
+      <rect x="118" y="110" width="964" height="680" rx="52" fill="${panel}" opacity="0.94" />
+      <rect x="178" y="170" width="250" height="34" rx="17" fill="${accentSoft}" />
+      <text x="215" y="193" font-size="28" font-family="Georgia, serif" fill="${accent}">${label}</text>
+      <rect x="210" y="308" width="210" height="298" rx="38" fill="${bottleOne}" />
+      <rect x="468" y="256" width="175" height="366" rx="32" fill="${bottleTwo}" />
+      <rect x="702" y="332" width="242" height="236" rx="42" fill="${accentSoft}" opacity="0.95" />
+      <rect x="252" y="270" width="126" height="42" rx="18" fill="${accent}" opacity="0.18" />
+      <rect x="510" y="214" width="92" height="42" rx="14" fill="${accent}" opacity="0.28" />
+      <rect x="760" y="388" width="124" height="18" rx="9" fill="${accent}" opacity="0.34" />
+      <rect x="760" y="430" width="92" height="18" rx="9" fill="${accent}" opacity="0.22" />
+      <path d="M936 258c-41-51-118-60-158-12 13 36 57 70 99 72 39 1 70-20 59-60Z" fill="${leaf}" opacity="0.95" />
+      <path d="M972 256c33-44 93-55 129-23-8 31-43 62-77 69-34 6-62-7-52-46Z" fill="${leaf}" opacity="0.76" />
+      <path d="M806 626c-46 59-122 76-169 28 10-45 62-93 113-104 48-10 85 10 56 76Z" fill="${leaf}" opacity="0.82" />
+    </svg>
+  `)}`;
+
 const featureCards = [
   {
     title: '100% Organic',
@@ -38,7 +86,17 @@ const featureCards = [
 
 const heroSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=1200',
+    image: buildSlideArtwork({
+      backgroundStart: '#f5fbf5',
+      backgroundEnd: '#e4efe4',
+      panel: '#fff8ef',
+      accent: '#0b7a5f',
+      accentSoft: '#e0f0df',
+      label: 'Botanical ritual',
+      bottleOne: '#d7b089',
+      bottleTwo: '#0f6b52',
+      leaf: '#7faf73',
+    }),
     alt: 'Organic skincare ritual with serum bottles',
     eyebrow: 'Calming ritual',
     title: 'Botanical care for a softer, clearer daily routine',
@@ -47,7 +105,17 @@ const heroSlides = [
     accent: 'Rosehip, aloe vera, chamomile',
   },
   {
-    image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200',
+    image: buildSlideArtwork({
+      backgroundStart: '#fcf3e6',
+      backgroundEnd: '#eef7ee',
+      panel: '#fffdf7',
+      accent: '#996035',
+      accentSoft: '#f7dfbf',
+      label: 'Clean shelf',
+      bottleOne: '#6f9d78',
+      bottleTwo: '#c88a59',
+      leaf: '#8cba7a',
+    }),
     alt: 'Natural beauty products arranged on a table',
     eyebrow: 'Curated essentials',
     title: 'A dedicated skincare store without chemical-product confusion',
@@ -56,7 +124,17 @@ const heroSlides = [
     accent: 'Transparent labels, clean categories',
   },
   {
-    image: 'https://images.unsplash.com/photo-1617897903246-719242758050?w=1200',
+    image: buildSlideArtwork({
+      backgroundStart: '#eef8f1',
+      backgroundEnd: '#fdf1ea',
+      panel: '#f8fbf3',
+      accent: '#1f7d67',
+      accentSoft: '#d8eee0',
+      label: 'Daily glow',
+      bottleOne: '#d2a66f',
+      bottleTwo: '#2d7867',
+      leaf: '#76aa70',
+    }),
     alt: 'Fresh botanical skincare ingredients',
     eyebrow: 'Glow naturally',
     title: 'Organic formulas that feel premium, honest, and easy to trust',
