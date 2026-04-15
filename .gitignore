@@ -3,4 +3,5 @@ dist/
 server/data/qamarun.db
 server/data/mailbox.log
 server/data/db.json
+server/data/*.sqbpro
 .vite/
