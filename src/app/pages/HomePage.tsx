@@ -13,54 +13,6 @@ import {
 import { api } from '../lib/api';
 import type { Product } from '../types';
 
-const buildSlideArtwork = ({
-  backgroundStart,
-  backgroundEnd,
-  panel,
-  accent,
-  accentSoft,
-  label,
-  bottleOne,
-  bottleTwo,
-  leaf,
-}: {
-  backgroundStart: string;
-  backgroundEnd: string;
-  panel: string;
-  accent: string;
-  accentSoft: string;
-  label: string;
-  bottleOne: string;
-  bottleTwo: string;
-  leaf: string;
-}) =>
-  `data:image/svg+xml;utf8,${encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
-      <defs>
-        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="${backgroundStart}" />
-          <stop offset="100%" stop-color="${backgroundEnd}" />
-        </linearGradient>
-      </defs>
-      <rect width="1200" height="900" fill="url(#bg)" />
-      <circle cx="980" cy="170" r="150" fill="${accentSoft}" opacity="0.7" />
-      <circle cx="170" cy="730" r="190" fill="${accentSoft}" opacity="0.55" />
-      <rect x="118" y="110" width="964" height="680" rx="52" fill="${panel}" opacity="0.94" />
-      <rect x="178" y="170" width="250" height="34" rx="17" fill="${accentSoft}" />
-      <text x="215" y="193" font-size="28" font-family="Georgia, serif" fill="${accent}">${label}</text>
-      <rect x="210" y="308" width="210" height="298" rx="38" fill="${bottleOne}" />
-      <rect x="468" y="256" width="175" height="366" rx="32" fill="${bottleTwo}" />
-      <rect x="702" y="332" width="242" height="236" rx="42" fill="${accentSoft}" opacity="0.95" />
-      <rect x="252" y="270" width="126" height="42" rx="18" fill="${accent}" opacity="0.18" />
-      <rect x="510" y="214" width="92" height="42" rx="14" fill="${accent}" opacity="0.28" />
-      <rect x="760" y="388" width="124" height="18" rx="9" fill="${accent}" opacity="0.34" />
-      <rect x="760" y="430" width="92" height="18" rx="9" fill="${accent}" opacity="0.22" />
-      <path d="M936 258c-41-51-118-60-158-12 13 36 57 70 99 72 39 1 70-20 59-60Z" fill="${leaf}" opacity="0.95" />
-      <path d="M972 256c33-44 93-55 129-23-8 31-43 62-77 69-34 6-62-7-52-46Z" fill="${leaf}" opacity="0.76" />
-      <path d="M806 626c-46 59-122 76-169 28 10-45 62-93 113-104 48-10 85 10 56 76Z" fill="${leaf}" opacity="0.82" />
-    </svg>
-  `)}`;
-
 const featureCards = [
   {
     title: '100% Organic',
@@ -86,61 +38,49 @@ const featureCards = [
 
 const heroSlides = [
   {
-    image: buildSlideArtwork({
-      backgroundStart: '#f5fbf5',
-      backgroundEnd: '#e4efe4',
-      panel: '#fff8ef',
-      accent: '#0b7a5f',
-      accentSoft: '#e0f0df',
-      label: 'Botanical ritual',
-      bottleOne: '#d7b089',
-      bottleTwo: '#0f6b52',
-      leaf: '#7faf73',
-    }),
-    alt: 'Organic skincare ritual with serum bottles',
     eyebrow: 'Calming ritual',
     title: 'Botanical care for a softer, clearer daily routine',
     description:
       'Discover ingredient-led cleansers, serums, and moisturizers selected for real organic skincare routines.',
     accent: 'Rosehip, aloe vera, chamomile',
+    label: 'Botanical ritual',
+    surfaceClass: 'bg-[linear-gradient(145deg,#eef7eb_0%,#fdf4ea_52%,#edf8f1_100%)]',
+    panelClass: 'bg-[#fff8ef]/95',
+    accentClass: 'bg-emerald-700/12',
+    accentStrongClass: 'bg-emerald-800/22',
+    bottleOneClass: 'bg-[#d7b089]',
+    bottleTwoClass: 'bg-[#0f6b52]',
+    leafClass: 'bg-[#7faf73]/90',
   },
   {
-    image: buildSlideArtwork({
-      backgroundStart: '#fcf3e6',
-      backgroundEnd: '#eef7ee',
-      panel: '#fffdf7',
-      accent: '#996035',
-      accentSoft: '#f7dfbf',
-      label: 'Clean shelf',
-      bottleOne: '#6f9d78',
-      bottleTwo: '#c88a59',
-      leaf: '#8cba7a',
-    }),
-    alt: 'Natural beauty products arranged on a table',
     eyebrow: 'Curated essentials',
     title: 'A dedicated skincare store without chemical-product confusion',
     description:
       'Every product page highlights benefits, ingredients, and simple guidance so customers can shop with confidence.',
     accent: 'Transparent labels, clean categories',
+    label: 'Clean shelf',
+    surfaceClass: 'bg-[linear-gradient(145deg,#fdf1e3_0%,#f7f7ef_40%,#edf7ef_100%)]',
+    panelClass: 'bg-[#fffdf7]/95',
+    accentClass: 'bg-amber-700/12',
+    accentStrongClass: 'bg-amber-800/18',
+    bottleOneClass: 'bg-[#6f9d78]',
+    bottleTwoClass: 'bg-[#c88a59]',
+    leafClass: 'bg-[#8cba7a]/90',
   },
   {
-    image: buildSlideArtwork({
-      backgroundStart: '#eef8f1',
-      backgroundEnd: '#fdf1ea',
-      panel: '#f8fbf3',
-      accent: '#1f7d67',
-      accentSoft: '#d8eee0',
-      label: 'Daily glow',
-      bottleOne: '#d2a66f',
-      bottleTwo: '#2d7867',
-      leaf: '#76aa70',
-    }),
-    alt: 'Fresh botanical skincare ingredients',
     eyebrow: 'Glow naturally',
     title: 'Organic formulas that feel premium, honest, and easy to trust',
     description:
       'Build a full skincare ritual from plant-based picks chosen for hydration, balance, and everyday comfort.',
     accent: 'Cruelty-free, botanical, student-friendly',
+    label: 'Daily glow',
+    surfaceClass: 'bg-[linear-gradient(145deg,#edf8f1_0%,#f6fbf1_45%,#fdf0e7_100%)]',
+    panelClass: 'bg-[#f8fbf3]/95',
+    accentClass: 'bg-emerald-700/12',
+    accentStrongClass: 'bg-emerald-800/20',
+    bottleOneClass: 'bg-[#d2a66f]',
+    bottleTwoClass: 'bg-[#2d7867]',
+    leafClass: 'bg-[#76aa70]/90',
   },
 ];
 
@@ -227,16 +167,35 @@ export const HomePage = () => {
 
             <div className="relative">
               <div className="absolute -inset-6 rounded-[2.5rem] bg-white/55 blur-2xl" />
-              <div className="relative overflow-hidden rounded-[2.5rem] border border-white/70 shadow-[0_30px_90px_rgba(15,23,42,0.18)]">
+              <div className="relative h-[420px] overflow-hidden rounded-[2.5rem] border border-white/70 shadow-[0_30px_90px_rgba(15,23,42,0.18)] sm:h-[500px]">
                 {heroSlides.map((slide, index) => (
-                  <img
-                    key={slide.image}
-                    src={slide.image}
-                    alt={slide.alt}
+                  <div
+                    key={slide.title}
                     className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
                       index === activeSlide ? 'opacity-100' : 'opacity-0'
                     }`}
-                  />
+                  >
+                    <div className={`absolute inset-0 ${slide.surfaceClass}`} />
+                    <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-white/35 blur-2xl" />
+                    <div className="absolute bottom-6 left-6 h-36 w-36 rounded-full bg-white/25 blur-3xl" />
+                    <div
+                      className={`absolute inset-x-[9%] top-[11%] bottom-[11%] rounded-[2.3rem] border border-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] ${slide.panelClass}`}
+                    />
+                    <div className="absolute left-[17%] top-[18%] rounded-full px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm">
+                      <span className={`absolute inset-0 rounded-full ${slide.accentClass}`} />
+                      <span className="relative">{slide.label}</span>
+                    </div>
+                    <div className={`absolute left-[20%] top-[34%] h-[42%] w-[22%] rounded-[2rem] shadow-xl ${slide.bottleOneClass}`} />
+                    <div className="absolute left-[23%] top-[28%] h-[7%] w-[16%] rounded-[1rem] bg-white/30" />
+                    <div className={`absolute left-[46%] top-[23%] h-[51%] w-[18%] rounded-[2rem] shadow-xl ${slide.bottleTwoClass}`} />
+                    <div className={`absolute left-[50%] top-[18%] h-[7%] w-[10%] rounded-[0.9rem] ${slide.accentStrongClass}`} />
+                    <div className={`absolute right-[13%] top-[39%] h-[31%] w-[22%] rounded-[2rem] shadow-lg ${slide.accentClass}`} />
+                    <div className={`absolute right-[18%] top-[50%] h-4 w-[20%] rounded-full ${slide.accentStrongClass}`} />
+                    <div className={`absolute right-[21%] top-[58%] h-4 w-[13%] rounded-full ${slide.accentClass}`} />
+                    <div className={`absolute right-[13%] top-[17%] h-16 w-28 rotate-[28deg] rounded-[80%_0] ${slide.leafClass}`} />
+                    <div className={`absolute right-[6%] top-[16%] h-14 w-24 rotate-[52deg] rounded-[80%_0] ${slide.leafClass}`} />
+                    <div className={`absolute right-[29%] bottom-[11%] h-20 w-32 -rotate-[18deg] rounded-[80%_0] ${slide.leafClass}`} />
+                  </div>
                 ))}
                 <div className="absolute inset-0 bg-gradient-to-tr from-emerald-950/50 via-transparent to-transparent" />
                 <div className="absolute left-6 top-6 max-w-xs rounded-2xl bg-white/85 p-4 shadow-lg backdrop-blur">
