@@ -8,8 +8,10 @@ Qamarun Beauty is a full-stack academic e-commerce web application focused only 
 - Product catalog with search, category filtering, product details, and ingredient/benefit visibility
 - Shopping cart with quantity updates and persistent local cart storage
 - Mock checkout flow that creates real saved orders through the backend API
-- Order history for customers
-- Admin dashboard with product CRUD, user management, order status management, and activity summary
+- Order history for customers with cancellation support while orders are still processing
+- Order status email notifications for processing, shipped, delivered, and cancelled updates
+- Admin dashboard with product CRUD, direct image upload, user management, and order status management
+- OTP-based forgot password flow with SMTP email support or local mailbox log fallback
 
 ## Tech Stack
 
@@ -23,8 +25,10 @@ Qamarun Beauty is a full-stack academic e-commerce web application focused only 
 .
 |-- server/
 |   |-- data/qamarun.db
+|   |-- data/mailbox.log
 |   |-- db.js
 |   |-- index.js
+|   |-- mailer.js
 |   `-- schema.md
 |-- src/
 |   |-- app/
@@ -85,7 +89,12 @@ npm run build
 - You can open it with DB Browser for SQLite
 - Tables are seeded automatically on first server start
 
+## Email Testing
+
+- OTP and order status emails use SMTP when configured
+- Without SMTP config, outgoing messages are written to `server/data/mailbox.log` for local testing
+
 ## Notes
 
 - Payments are mocked for academic demonstration.
-- The data model is documented in [server/schema.md](/c:/Users/sree/Downloads/Build%20Qamarun%20Beauty%20E-commerce/server/schema.md).
+- The data model is documented in `server/schema.md`.
